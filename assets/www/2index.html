@@ -1,0 +1,195 @@
+<!-- Copyright (c) 2012 Mobile Developer Solutions -->
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-type" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+    <title>GeoTrax with Google Maps</title>
+
+ 	<link rel="stylesheet" href="jquery.mobile/jquery.mobile-1.1.0.min.css" />
+	<script src="jquery.mobile/jquery-1.7.2.min"></script>
+	<script src="jquery.mobile/jquery.mobile-1.1.0.min.js"></script>
+	
+	<link rel="stylesheet" href="index.css" /> 
+	<script type="text/javascript" charset="utf-8" src="phonegap-1.4.1.js"></script>
+	<script type="text/javascript" charset="utf-8" src="index.js"></script>
+  
+	<!-- CDN Respositories: For production, replace lines above with these uncommented minified versions -->
+	<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />-->
+	<!-- <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>-->
+	<!-- <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>-->
+	
+	
+	
+  </head>
+  
+  <body onload="init();">
+	<div data-role="page" id="page-home" class="type-interior" data-theme="b">
+
+	<div data-role="header" data-theme="b">
+		<h1>GeoTrax with Google Maps</h1>
+ 		<a href="#" data-icon="home" data-iconpos="notext" id="intro" class="ui-btn-right">intro</a>
+	</div>
+
+	<div data-role="content" data-theme="c">			
+		<div class="content-secondary">
+			<div data-role="collapsible" data-collapsed="true" data-theme="b" data-content-theme="b">
+				<h3>GeoTrax Menu</h3>
+
+				<ul data-role="listview" data-theme="b" data-dividertheme="b">
+					<li id="listdivider" data-role="list-divider">GeoTrax Menu</li>
+					
+ 					<li><a id="click-connection">Connection Detection</a></li>
+					
+					<li><a id="click-device">Device Information</a></li>
+					
+					<li><a id="click-geolocation">GeoTrax Ability</a></li>
+					
+					<li><a id="click-storage">Storage</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="content-primary">
+		    <div class="api-div" id="api-intro">
+		         <h2>GeoTrax</h2>
+				<blockquote>
+  					<p>GeoTrax will record your travels and show your path on a map.</p>
+				</blockquote>
+
+				<div>
+				<h4>You <strong>must start the GeoTrax Ability </strong>to see it demonstrated, <strong>by toggling it's start button. </strong></h4>
+				<h4 class="help">Ensure your<strong> GPS & Network Location</strong> is on to ensure accurate results.</h4>
+				
+				<p id="copyright">&copy; 2012 S373N Mobile Solutions</p>
+				</div>		    					
+			</div>
+
+		    <div class="api-div" id="api-connection">
+				<h2>Connection Check</h2>
+				<blockquote>
+  					<p>This <code>connection check</code> shows which of your device's cellular and wifi connections are available.</p>
+				</blockquote>
+   				<div data-role="button" onclick="check_network();">Check Connection</div>
+   				<div>Connection: <b id="connection"></b></div>    
+			</div>
+
+  		    <div class="api-div" id="api-device">
+				<h2>Device</h2>
+				<blockquote>
+					<p>The <code>device</code> page describes the device's hardware and software that will help identify your phone.</p>
+				</blockquote>
+				
+      			<table id="deviceinfo">
+  					<tr>
+   					 	<th>Device</th>
+   					 	<th class="alt">Value</th>
+  					</tr>
+  					<tr>
+    					<td>Name</td>
+    					<td class="alt"><strong id="name">&nbsp;</strong></td>
+  					</tr>
+  					<tr>
+    					<td>Platform</td>
+   					 	<td class="alt"><strong id="platform">&nbsp;</strong></td>
+  					</tr>
+  					<tr>
+    					<td>PhoneGap Version</td>
+   					 	<td class="alt"><strong id="pgversion">&nbsp;</strong></td>
+  					</tr>
+  					<tr>
+    					<td>UUID</td>
+   					 	<td class="alt"><strong id="uuid">&nbsp;</strong></td>
+  					</tr>
+  					<tr>
+    					<td>OS Version</td>
+   					 	<td class="alt"><strong id="version">&nbsp;</strong></td>
+  					</tr>
+  					<tr>
+   					 	<th>Screen</th>
+   					 	<th class="alt">Value</th>
+  					</tr>
+  					<tr>
+    					<td>Width</td>
+    					<td class="alt"><strong id="width">&nbsp;</strong></td>
+  					</tr>
+   					<tr>
+    					<td>Height</td>
+    					<td class="alt"><strong id="height">&nbsp;</strong></td>
+  					</tr>
+   					<tr>
+    					<td>Available Width</td>
+    					<td class="alt"><strong id="availwidth">&nbsp;</strong></td>
+  					</tr>
+   					<tr>
+    					<td>Available Height</td>
+    					<td class="alt"><strong id="availheight">&nbsp;</strong></td>
+  					</tr>
+   					<tr>
+    					<td>Color Depth</td>
+    					<td class="alt"><strong id="colorDepth">&nbsp;</strong></td>
+  					</tr> 					
+				</table>							
+			</div>
+
+		    <div class="api-div" id="api-geolocation">
+				<h2>GeoTrax Ability</h2>
+				<blockquote>
+  					<p>Here is the <code>GeoTrax Ability</code>  that access the device's GPS sensor.</p>
+				</blockquote>
+				<h4 class="help"><b>Toggle</b> to stop/start
+				GeoTrax watch. <br/><b>Get Current</b> for one-time geolocation reading.</h4>
+				<div class="ui-grid-a">
+					<div class="ui-block-a"><div data-role="button" onclick="toggleWatchPosition();">Toggle</div></div>
+					<div class="ui-block-b"><div data-role="button" onclick="getCurrentPosition();">Get Current</div></div>
+				</div>
+   				<div id="cur_position"></div>
+   				<img id="map"/>
+   				<div data-role="controlgroup">
+					<div data-role="button" onclick="createDB();">Create DB</div>
+					<div data-role="button" onclick="getSqlResultSet();">SQL Result Set</div>
+					<div class="ui-grid-a">
+					SQL Result: <br/><span id="sql-result"></span><br/>
+					</div>
+				</div>								
+			</div>
+
+		    <div class="api-div" id="api-storage">
+				<h2>Storage</h2>
+				<blockquote>
+  					<p>Provides access to the devices storage options.</p>
+				</blockquote>
+				<h4 class="help">Based on <strong>W3C Web SQL Database Spec</strong> and <strong>W3C Web Storage API Spec</strong></h4>							
+				<div data-role="controlgroup">
+					<div data-role="button" onclick="createDB();">Create DB</div>
+					<div data-role="button" onclick="getSqlResultSet();">SQL Result Set</div>
+					<div class="ui-grid-a">
+					SQL Result: <br/><span id="sql-result"></span><br/>
+					</div>
+				</div>
+				
+				<div data-role="controlgroup">
+					<div data-role="button" onclick="writeLocalStorage();">Write LocalStorage</div>
+					<div data-role="button" onclick="readLocalStorage();">Read LocalStorage</div>
+					<div data-role="button" onclick="removeItemLocalStorage();">Remove Item</div>
+					<div class="ui-grid-a">
+					Local Storage: <span id="local-storage-result"></span><br/>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div data-role="footer" data-position="fixed" class="footer-docs" data-theme="b">
+		<p>&copy; 2012 S373N Mobile Solutions</p>
+	</div>	
+	</div>	
+	
+	<script type="text/javascript" charset="utf-8" src="apis/connection.js"></script>
+	
+	<script type="text/javascript" charset="utf-8" src="apis/device.js"></script>
+	
+	
+	<script type="text/javascript" charset="utf-8" src="apis/geolocation.js"></script>
+	
+	<script type="text/javascript" charset="utf-8" src="apis/storage.js"></script> 			
+  </body>
+</html>
